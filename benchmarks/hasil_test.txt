@@ -1,0 +1,42 @@
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying users.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying catalog.0001_initial... OK
+  Applying catalog.0002_initial... OK
+  Applying catalog.0003_course_catalog_cou_is_acti_d7f8f8_idx... OK
+  Applying sessions.0001_initial... OK
+test_generators_create_expected_data_and_are_repeatable (catalog.test_performance.GeneratorTests.test_generators_create_expected_data_and_are_repeatable) ... Course baru: 10000; total Course: 10000
+test_index_declared_on_model (catalog.test_performance.IndexTests.test_index_declared_on_model) ... ok
+test_index_exists_in_database (catalog.test_performance.IndexTests.test_index_exists_in_database) ... ok
+test_exists_count_values_annotate (catalog.test_performance.QueryOptimizationTests.test_exists_count_values_annotate) ... ok
+test_n_plus_1_lecturer_before (catalog.test_performance.QueryOptimizationTests.test_n_plus_1_lecturer_before) ... ok
+test_n_plus_1_lessons_before (catalog.test_performance.QueryOptimizationTests.test_n_plus_1_lessons_before) ... ok
+test_prefetch_related_lessons_after (catalog.test_performance.QueryOptimizationTests.test_prefetch_related_lessons_after) ... ok
+test_select_related_lecturer_after (catalog.test_performance.QueryOptimizationTests.test_select_related_lecturer_after) ... ok
+test_course_code_unique (catalog.tests.CourseTestCase.test_course_code_unique) ... ok
+test_course_created (catalog.tests.CourseTestCase.test_course_created) ... ok
+test_lesson_relationship (catalog.tests.CourseTestCase.test_lesson_relationship) ... ok
+test_custom_manager_active (catalog.tests.ExtraModelTests.test_custom_manager_active) ... ok
+test_default_role_is_student (catalog.tests.ExtraModelTests.test_default_role_is_student) ... ok
+test_enrollment_unique (catalog.tests.ExtraModelTests.test_enrollment_unique) ... ok
+test_lesson_order_unique_per_course (catalog.tests.ExtraModelTests.test_lesson_order_unique_per_course) ... ok
+test_seed_demo_is_idempotent (catalog.tests.ExtraModelTests.test_seed_demo_is_idempotent) ... Sample data berhasil dibuat.
+test_select_related_uses_one_query (catalog.tests.ExtraModelTests.test_select_related_uses_one_query) ... ok
+test_submission_relationship (catalog.tests.ExtraModelTests.test_submission_relationship) ... ok
+Ran 18 tests in 7.198s
+OK

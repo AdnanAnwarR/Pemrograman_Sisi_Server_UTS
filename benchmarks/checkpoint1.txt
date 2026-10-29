@@ -1,0 +1,2 @@
+Jumlah Course: 10005
+Jumlah query SQL: 1

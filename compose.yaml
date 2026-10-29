@@ -9,6 +9,7 @@ services:
       - .:/app
     depends_on:
       - db
+      - redis
   db:
     image: postgres:17
     environment:
@@ -17,6 +18,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
 
 volumes:
   postgres_data:

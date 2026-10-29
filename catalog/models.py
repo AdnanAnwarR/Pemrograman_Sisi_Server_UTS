@@ -30,6 +30,9 @@ class Course(models.Model):
 
     class Meta:
         ordering = ["code"]
+        indexes = [
+            models.Index(fields=["is_active", "title"]),
+        ]
 
     def __str__(self):
         return f"{self.code} - {self.title}"

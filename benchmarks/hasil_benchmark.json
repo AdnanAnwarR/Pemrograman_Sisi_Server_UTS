@@ -1,0 +1,137 @@
+{
+  "postgres": "PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
+  "repeat": 7,
+  "dataset": {
+    "Course (total)": 10005,
+    "Course PERF": 10000,
+    "Lecturer": 6,
+    "Student": 51,
+    "Lesson": 503,
+    "Enrollment": 1001,
+    "Assignment": 202,
+    "Submission": 1002
+  },
+  "course_lecturer": {
+    "before": {
+      "queries": 101,
+      "median_ms": 54.782,
+      "min_ms": 49.387,
+      "max_ms": 59.33,
+      "rows": 100
+    },
+    "after": {
+      "queries": 1,
+      "median_ms": 2.632,
+      "min_ms": 2.4,
+      "max_ms": 2.711,
+      "rows": 100
+    },
+    "query_improvement_pct": 99.0,
+    "time_improvement_pct": 95.2
+  },
+  "course_lesson": {
+    "before": {
+      "queries": 51,
+      "median_ms": 42.319,
+      "min_ms": 41.605,
+      "max_ms": 53.849,
+      "rows": 50
+    },
+    "after": {
+      "queries": 2,
+      "median_ms": 6.074,
+      "min_ms": 4.668,
+      "max_ms": 7.568,
+      "rows": 50
+    },
+    "query_improvement_pct": 96.1,
+    "time_improvement_pct": 85.6
+  },
+  "lab_d": {
+    "exists": true,
+    "exists_queries": 1,
+    "count": 10000,
+    "count_queries": 1,
+    "values": [
+      {
+        "code": "PERF00000",
+        "title": "Performance Course 0"
+      },
+      {
+        "code": "PERF00001",
+        "title": "Performance Course 1"
+      },
+      {
+        "code": "PERF00002",
+        "title": "Performance Course 2"
+      },
+      {
+        "code": "PERF00003",
+        "title": "Performance Course 3"
+      },
+      {
+        "code": "PERF00004",
+        "title": "Performance Course 4"
+      }
+    ],
+    "values_queries": 1,
+    "annotate": [
+      [
+        "PERF00000",
+        10
+      ],
+      [
+        "PERF00001",
+        10
+      ],
+      [
+        "PERF00002",
+        10
+      ],
+      [
+        "PERF00003",
+        10
+      ],
+      [
+        "PERF00004",
+        10
+      ]
+    ],
+    "annotate_queries": 1
+  },
+  "index": {
+    "name": "catalog_cou_is_acti_d7f8f8_idx",
+    "fields": [
+      "is_active",
+      "title"
+    ],
+    "cases": [
+      {
+        "label": "Query modul (judul 5000, is_active=True)",
+        "query": "Course.objects.filter(is_active=True, title='Performance Course 5000')",
+        "rows": 0,
+        "plan_before": "Sort  (cost=239.07..239.08 rows=1 width=58) (actual time=0.594..0.595 rows=0 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on catalog_course  (cost=0.00..239.06 rows=1 width=58) (actual time=0.592..0.592 rows=0 loops=1)\n        Filter: (is_active AND ((title)::text = 'Performance Course 5000'::text))\n        Rows Removed by Filter: 10005\nPlanning Time: 0.041 ms\nExecution Time: 0.603 ms",
+        "plan_after": "Sort  (cost=8.31..8.32 rows=1 width=58) (actual time=0.009..0.009 rows=0 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Index Scan using catalog_cou_is_acti_d7f8f8_idx on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.007..0.007 rows=0 loops=1)\n        Index Cond: ((is_active = true) AND ((title)::text = 'Performance Course 5000'::text))\nPlanning Time: 0.046 ms\nExecution Time: 0.018 ms",
+        "exec_ms_before": 0.603,
+        "exec_ms_after": 0.018,
+        "orm_ms_before": 1.025,
+        "orm_ms_after": 0.448,
+        "time_improvement_pct": 97.0
+      },
+      {
+        "label": "Query judul aktif (judul 5001, is_active=True)",
+        "query": "Course.objects.filter(is_active=True, title='Performance Course 5001')",
+        "rows": 1,
+        "plan_before": "Sort  (cost=239.07..239.08 rows=1 width=58) (actual time=0.540..0.541 rows=1 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on catalog_course  (cost=0.00..239.06 rows=1 width=58) (actual time=0.267..0.537 rows=1 loops=1)\n        Filter: (is_active AND ((title)::text = 'Performance Course 5001'::text))\n        Rows Removed by Filter: 10004\nPlanning Time: 0.037 ms\nExecution Time: 0.549 ms",
+        "plan_after": "Sort  (cost=8.31..8.32 rows=1 width=58) (actual time=0.013..0.013 rows=1 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Index Scan using catalog_cou_is_acti_d7f8f8_idx on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.009..0.010 rows=1 loops=1)\n        Index Cond: ((is_active = true) AND ((title)::text = 'Performance Course 5001'::text))\nPlanning Time: 0.044 ms\nExecution Time: 0.022 ms",
+        "exec_ms_before": 0.568,
+        "exec_ms_after": 0.022,
+        "orm_ms_before": 1.143,
+        "orm_ms_after": 0.503,
+        "time_improvement_pct": 96.1
+      }
+    ],
+    "plan_code_unique": "Index Scan using catalog_course_code_e109f879_like on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.006..0.006 rows=1 loops=1)\n  Index Cond: ((code)::text = 'PERF05000'::text)\nPlanning Time: 0.028 ms\nExecution Time: 0.013 ms",
+    "exec_ms_code_unique": 0.013
+  }
+}

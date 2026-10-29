@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'catalog',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -81,7 +83,7 @@ DATABASES = {
         "NAME": os.environ.get("DB_NAME"),
         "USER": os.environ.get("DB_USER"),
         "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": "db",
+        "HOST": os.environ.get("DB_HOST", "db"),
         "PORT": "5432",
     }
 }
@@ -130,3 +132,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user (harus ditentukan sebelum migration authentication pertama)
 AUTH_USER_MODEL = "users.User"
+
+# ---------------------------------------------------------------------------
+# Minggu 5: Debug Toolbar + Redis cache
+# ---------------------------------------------------------------------------
+INTERNAL_IPS = ["127.0.0.1"]
+
+# Di Docker, request dari browser host datang lewat gateway network container.
+import socket
+
+try:
+    _hostname, _, _ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS += [ip[: ip.rfind(".")] + ".1" for ip in _ips]
+except socket.error:
+    pass
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get("REDIS_URL", "redis://redis:6379/1"),
+        "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
+    }
+}
