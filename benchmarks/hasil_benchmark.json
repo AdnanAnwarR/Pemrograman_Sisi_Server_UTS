@@ -1,5 +1,5 @@
 {
-  "postgres": "PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
+  "postgres": "PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
   "repeat": 7,
   "dataset": {
     "Course (total)": 10005,
@@ -14,38 +14,38 @@
   "course_lecturer": {
     "before": {
       "queries": 101,
-      "median_ms": 54.782,
-      "min_ms": 49.387,
-      "max_ms": 59.33,
+      "median_ms": 44.176,
+      "min_ms": 42.081,
+      "max_ms": 47.382,
       "rows": 100
     },
     "after": {
       "queries": 1,
-      "median_ms": 2.632,
-      "min_ms": 2.4,
-      "max_ms": 2.711,
+      "median_ms": 2.785,
+      "min_ms": 2.425,
+      "max_ms": 3.045,
       "rows": 100
     },
     "query_improvement_pct": 99.0,
-    "time_improvement_pct": 95.2
+    "time_improvement_pct": 93.7
   },
   "course_lesson": {
     "before": {
       "queries": 51,
-      "median_ms": 42.319,
-      "min_ms": 41.605,
-      "max_ms": 53.849,
+      "median_ms": 32.375,
+      "min_ms": 28.59,
+      "max_ms": 35.135,
       "rows": 50
     },
     "after": {
       "queries": 2,
-      "median_ms": 6.074,
-      "min_ms": 4.668,
-      "max_ms": 7.568,
+      "median_ms": 4.2,
+      "min_ms": 3.836,
+      "max_ms": 4.603,
       "rows": 50
     },
     "query_improvement_pct": 96.1,
-    "time_improvement_pct": 85.6
+    "time_improvement_pct": 87.0
   },
   "lab_d": {
     "exists": true,
@@ -110,28 +110,28 @@
         "label": "Query modul (judul 5000, is_active=True)",
         "query": "Course.objects.filter(is_active=True, title='Performance Course 5000')",
         "rows": 0,
-        "plan_before": "Sort  (cost=239.07..239.08 rows=1 width=58) (actual time=0.594..0.595 rows=0 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on catalog_course  (cost=0.00..239.06 rows=1 width=58) (actual time=0.592..0.592 rows=0 loops=1)\n        Filter: (is_active AND ((title)::text = 'Performance Course 5000'::text))\n        Rows Removed by Filter: 10005\nPlanning Time: 0.041 ms\nExecution Time: 0.603 ms",
-        "plan_after": "Sort  (cost=8.31..8.32 rows=1 width=58) (actual time=0.009..0.009 rows=0 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Index Scan using catalog_cou_is_acti_d7f8f8_idx on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.007..0.007 rows=0 loops=1)\n        Index Cond: ((is_active = true) AND ((title)::text = 'Performance Course 5000'::text))\nPlanning Time: 0.046 ms\nExecution Time: 0.018 ms",
-        "exec_ms_before": 0.603,
-        "exec_ms_after": 0.018,
-        "orm_ms_before": 1.025,
-        "orm_ms_after": 0.448,
-        "time_improvement_pct": 97.0
+        "plan_before": "Sort  (cost=239.07..239.08 rows=1 width=58) (actual time=0.474..0.475 rows=0 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on catalog_course  (cost=0.00..239.06 rows=1 width=58) (actual time=0.473..0.473 rows=0 loops=1)\n        Filter: (is_active AND ((title)::text = 'Performance Course 5000'::text))\n        Rows Removed by Filter: 10005\nPlanning Time: 0.026 ms\nExecution Time: 0.480 ms",
+        "plan_after": "Sort  (cost=8.31..8.32 rows=1 width=58) (actual time=0.008..0.008 rows=0 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Index Scan using catalog_cou_is_acti_d7f8f8_idx on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.007..0.007 rows=0 loops=1)\n        Index Cond: ((is_active = true) AND ((title)::text = 'Performance Course 5000'::text))\nPlanning Time: 0.028 ms\nExecution Time: 0.014 ms",
+        "exec_ms_before": 0.47,
+        "exec_ms_after": 0.015,
+        "orm_ms_before": 0.872,
+        "orm_ms_after": 0.36,
+        "time_improvement_pct": 96.8
       },
       {
         "label": "Query judul aktif (judul 5001, is_active=True)",
         "query": "Course.objects.filter(is_active=True, title='Performance Course 5001')",
         "rows": 1,
-        "plan_before": "Sort  (cost=239.07..239.08 rows=1 width=58) (actual time=0.540..0.541 rows=1 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on catalog_course  (cost=0.00..239.06 rows=1 width=58) (actual time=0.267..0.537 rows=1 loops=1)\n        Filter: (is_active AND ((title)::text = 'Performance Course 5001'::text))\n        Rows Removed by Filter: 10004\nPlanning Time: 0.037 ms\nExecution Time: 0.549 ms",
-        "plan_after": "Sort  (cost=8.31..8.32 rows=1 width=58) (actual time=0.013..0.013 rows=1 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Index Scan using catalog_cou_is_acti_d7f8f8_idx on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.009..0.010 rows=1 loops=1)\n        Index Cond: ((is_active = true) AND ((title)::text = 'Performance Course 5001'::text))\nPlanning Time: 0.044 ms\nExecution Time: 0.022 ms",
-        "exec_ms_before": 0.568,
-        "exec_ms_after": 0.022,
-        "orm_ms_before": 1.143,
-        "orm_ms_after": 0.503,
-        "time_improvement_pct": 96.1
+        "plan_before": "Sort  (cost=239.07..239.08 rows=1 width=58) (actual time=0.440..0.440 rows=1 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on catalog_course  (cost=0.00..239.06 rows=1 width=58) (actual time=0.219..0.438 rows=1 loops=1)\n        Filter: (is_active AND ((title)::text = 'Performance Course 5001'::text))\n        Rows Removed by Filter: 10004\nPlanning Time: 0.023 ms\nExecution Time: 0.445 ms",
+        "plan_after": "Sort  (cost=8.31..8.32 rows=1 width=58) (actual time=0.008..0.008 rows=1 loops=1)\n  Sort Key: code\n  Sort Method: quicksort  Memory: 25kB\n  ->  Index Scan using catalog_cou_is_acti_d7f8f8_idx on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.007..0.007 rows=1 loops=1)\n        Index Cond: ((is_active = true) AND ((title)::text = 'Performance Course 5001'::text))\nPlanning Time: 0.024 ms\nExecution Time: 0.013 ms",
+        "exec_ms_before": 0.445,
+        "exec_ms_after": 0.013,
+        "orm_ms_before": 0.883,
+        "orm_ms_after": 0.4,
+        "time_improvement_pct": 97.1
       }
     ],
-    "plan_code_unique": "Index Scan using catalog_course_code_e109f879_like on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.006..0.006 rows=1 loops=1)\n  Index Cond: ((code)::text = 'PERF05000'::text)\nPlanning Time: 0.028 ms\nExecution Time: 0.013 ms",
-    "exec_ms_code_unique": 0.013
+    "plan_code_unique": "Index Scan using catalog_course_code_e109f879_like on catalog_course  (cost=0.29..8.30 rows=1 width=58) (actual time=0.003..0.003 rows=1 loops=1)\n  Index Cond: ((code)::text = 'PERF05000'::text)\nPlanning Time: 0.017 ms\nExecution Time: 0.007 ms",
+    "exec_ms_code_unique": 0.007
   }
 }
