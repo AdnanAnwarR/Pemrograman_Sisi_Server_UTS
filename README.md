@@ -3,10 +3,45 @@
 Pemrograman Sisi Server (A11.64707) — Modul Praktikum 4 (ORM) dan 5 (Database Optimization).
 Django + PostgreSQL berjalan penuh di Docker (tidak perlu install Django/PostgreSQL di host).
 
+## Struktur Project
+
+```
+.
+├── manage.py
+├── config/                      # pengaturan project Django
+├── users/                       # Custom User (role: ADMIN, LECTURER, STUDENT)
+├── catalog/                     # model LMS, admin, test, dan management command
+│   ├── models.py
+│   ├── tests.py / test_performance.py
+│   ├── migrations/
+│   └── management/commands/
+│       ├── seed_demo.py                   # sample data Minggu 4
+│       ├── generate_performance_data.py   # 10.000 Course (Minggu 5)
+│       ├── generate_relationship_data.py  # data relasi LMS (Minggu 5)
+│       └── benchmark_week5.py             # benchmark BEFORE vs AFTER otomatis
+├── benchmarks/
+│   ├── shell/                   # skrip untuk Django Shell (lihat bagian Minggu 5)
+│   └── ...                      # hasil benchmark dan laporan
+├── requirements.txt / Dockerfile / compose.yaml
+└── .env                         # tidak di-commit (contoh: .env.example)
+```
+
+## Menjalankan Project
+
+1. Buat file `.env` di root project (salin dari `.env.example`):
+   ```
+   DB_NAME=lms_db
+   DB_USER=lms_user
+   DB_PASSWORD=lms_password
+   REDIS_URL=redis://redis:6379/1
+   ```
+2. `docker compose build` lalu `docker compose up -d` dan `docker compose ps` (service `app`, `db`, `redis` harus **Up**). Aplikasi di http://localhost:8000.
+3. Hentikan container dengan `docker compose down`. Tambahkan `-v` hanya jika ingin menghapus seluruh data database.
+
 ## Model
 `User` (role ADMIN/LECTURER/STUDENT), `Course`, `Lesson`, `Enrollment`, `Assignment`, `Submission`.
 
-## Cara menjalankan
+## Perintah Minggu 4
 ```bash
 docker compose build
 docker compose up -d
@@ -101,6 +136,35 @@ with CaptureQueriesContext(connection) as ctx:
 print(len(rows), len(ctx.captured_queries))   # BEFORE: 101 query
 ```
 Debug Toolbar: buka http://localhost:8000/admin/ saat `DEBUG=True` (jika tidak muncul di Docker, pakai `CaptureQueriesContext`).
+
+
+### 4. Skrip Django Shell (bukti BEFORE/AFTER untuk laporan)
+Skrip di `benchmarks/shell/` mencetak jumlah Course, jumlah query, dan waktu eksekusi. Jalankan dari root project dengan data dan kondisi yang sama; waktu berbeda di tiap komputer, jadi ulangi beberapa kali.
+```bash
+# Course + Lecturer (select_related)
+docker compose exec -T app python manage.py shell < benchmarks/shell/bench_lecturer_before.py
+docker compose exec -T app python manage.py shell < benchmarks/shell/bench_lecturer_after.py
+
+# Course + Lesson (prefetch_related)
+docker compose exec -T app python manage.py shell < benchmarks/shell/bench_lesson_before.py
+docker compose exec -T app python manage.py shell < benchmarks/shell/bench_lesson_after.py
+
+# exists(), count(), values(), annotate()
+docker compose exec -T app python manage.py shell < benchmarks/shell/bench_lab_d.py
+```
+
+### 5. EXPLAIN sebelum dan sesudah index (lewat migrasi)
+Index ada di migrasi `catalog/0003`. Untuk membandingkan secara manual:
+```bash
+# BEFORE: lepas index
+docker compose exec app python manage.py migrate catalog 0002
+docker compose exec -T app python manage.py shell < benchmarks/shell/bench_index.py
+
+# AFTER: pasang index kembali
+docker compose exec app python manage.py migrate
+docker compose exec -T app python manage.py shell < benchmarks/shell/bench_index.py
+```
+(`benchmark_week5` di atas melakukan hal yang sama secara otomatis tanpa menyentuh migrasi.)
 
 ### Catatan temuan
 Generator membuat course dengan `i % 5 == 0` tidak aktif, sehingga `title="Performance Course 5000"` + `is_active=True`
